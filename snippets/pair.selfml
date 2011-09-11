@@ -1,0 +1,8 @@
+(name Pair)
+
+(trigger
+    (tab ,))
+
+(only-in source.go)
+
+(snippet [%{1="first"}, %{0="second"}])

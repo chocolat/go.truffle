@@ -1,0 +1,10 @@
+(name [If Statement])
+
+(trigger
+    (tab if))
+
+(only-in source.go)
+
+(snippet [if %{1="condition"}%{1/(.+)/ /}{
+	%{0="// body"}
+}])

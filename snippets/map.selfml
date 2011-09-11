@@ -1,0 +1,8 @@
+(name Map)
+
+(trigger
+    (tab map))
+
+(only-in source.go)
+
+(snippet [map[%{1="keytype"}]%{2="valtype"}])

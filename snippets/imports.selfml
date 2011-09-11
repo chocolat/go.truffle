@@ -1,0 +1,11 @@
+(name Imports)
+
+(trigger
+    (tab imps))
+
+(only-in source.go)
+
+(snippet [import (
+	"%{0="package"}"
+)
+])

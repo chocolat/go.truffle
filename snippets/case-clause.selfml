@@ -1,0 +1,9 @@
+(name [Case Clause])
+
+(trigger
+    (tab case))
+
+(only-in source.go)
+
+(snippet [case %{1="condition"}:
+	%{0="//body"}])

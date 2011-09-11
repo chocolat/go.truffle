@@ -1,0 +1,10 @@
+(name Variables)
+
+(trigger
+    (tab vars))
+
+(only-in source.go)
+
+(snippet [var (
+	%{1="name"}%{2/(.+)/ /}%{2="type"}%{3=" = %{0="value"}"}
+)])

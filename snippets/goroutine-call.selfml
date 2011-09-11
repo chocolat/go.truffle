@@ -1,0 +1,10 @@
+(name [Goroutine Call])
+
+(trigger
+    (tab go))
+
+(only-in source.go)
+
+(snippet [go func(%{1="params"}) {
+	%{0="// body"}
+}(%{2="%{1/(.+)?/(?1:values)/}"})])

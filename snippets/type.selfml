@@ -1,0 +1,8 @@
+(name Type)
+
+(trigger
+    (tab type))
+
+(only-in source.go)
+
+(snippet [type %{1="name"} %{0="definition"}])

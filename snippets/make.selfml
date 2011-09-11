@@ -1,0 +1,8 @@
+(name Make)
+
+(trigger
+    (tab mk))
+
+(only-in source.go)
+
+(snippet [%{1="name"}%{1/(.+)/ := /}make(%{0="reftype"})])

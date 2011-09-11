@@ -1,0 +1,11 @@
+(name [Main Function])
+
+(trigger
+    (tab main))
+
+(only-in source.go)
+
+(snippet [func main() {
+	%{0="// body"}
+}
+])

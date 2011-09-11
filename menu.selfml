@@ -1,0 +1,13 @@
+(menu command.run
+    command.compile
+    command.build
+    command.build-package
+    ---
+    command.tidy
+    ---
+    (submenu Organization snippet.package snippet.import snippet.imports)
+    (submenu Declaration snippet.type snippet.types snippet.constant snippet.constants snippet.variable snippet.variables snippet.function snippet.function-w-result-vars snippet.method snippet.method-w-result-vars)
+    (submenu Types snippet.empty-interface snippet.interface snippet.struct snippet.slice snippet.map snippet.channel snippet.function-type)
+    (submenu Initialization snippet.initialize snippet.make snippet.new snippet.iota)
+    (submenu [Control Flow] snippet.if-statement snippet.switch-statement snippet.select-statement snippet.case-clause snippet.default-clause --- snippet.for-loop snippet.for-index-loop snippet.for-range-loop)
+    (submenu Idioms snippet.goroutine-call snippet.deferred-call snippet.main-function snippet.init-function --- snippet.pair snippet.send_receive snippet.return-statement))

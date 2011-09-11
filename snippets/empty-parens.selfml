@@ -1,0 +1,10 @@
+(name [Empty Parens])
+
+(trigger
+    (key [[enter]]))
+
+(only-in [source.go meta.parens.empty.go])
+
+(snippet [
+	%{0}
+])

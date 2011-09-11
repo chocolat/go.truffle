@@ -1,0 +1,271 @@
+(root source.go
+    (include @receiver_function_declaration)
+    (include @plain_function_declaration)
+    (include @basic_things)
+    (include @exported_variables)
+    (zone meta.preprocessor.go.import
+        (start
+            (regex [^[[:blank:]]*(import)\b\s+]
+                (1 keyword.control.import.go)))
+        (end
+            (regex [(?=(?://|/\*))|$]))
+        (subzones
+            (zone string.quoted.double.import.go
+                (start
+                    (regex "
+                        (0 punctuation.definition.string.begin.go)))
+                (end
+                    (regex "
+                        (0 punctuation.definition.string.end.go))))))
+    (include @block)
+    (include @root_parens)
+    (include @function_calls))
+
+(collection fn_parens
+    (zone meta.parens.go
+        (start
+            (regex [\(]))
+        (end
+            (regex [\)]))
+        (subzones
+            (include @basic_things)
+            (include @function_calls))))
+
+(collection comments
+    (zone comment.block.go
+        (match
+            (regex [^/\* =(\s*.*?)\s*= \*/$\n?]
+                (1 meta.toc-list.banner.block.go))))
+    (zone comment.block.go
+        (start
+            (regex /\*
+                (0 punctuation.definition.comment.go)))
+        (end
+            (regex \*/
+                (0 punctuation.definition.comment.go))))
+    (zone invalid.illegal.stray-commend-end.go
+        (match
+            (regex \*/.*\n)))
+    (zone comment.line.double-slash.banner.go
+        (match
+            (regex [^// =(\s*.*?)\s*=\s*$\n?]
+                (1 meta.toc-list.banner.line.go))))
+    (zone comment.line.double-slash.go
+        (start
+            (regex //
+                (0 punctuation.definition.comment.go)))
+        (end
+            (regex $\n?))
+        (subzones
+            (zone punctuation.separator.continuation.go
+                (match
+                    (regex [(?>\\\s*\n)]))))))
+
+(collection function_block
+    (zone meta.block.go
+        (start
+            (regex [\{]))
+        (end
+            (regex [\}]))
+        (subzones
+            (include @function_block_innards))))
+
+(collection block_innards
+    (include @function_block_innards)
+    (include @exported_variables))
+
+(collection access
+    (zone variable.other.dot-access.go
+        (match
+            (regex [(?<=\.)[[:alpha:]_][[:alnum:]_]*\b(?!\s*\()]))))
+
+(collection function_block_innards
+    (include @basic_things)
+    (zone
+        (match
+            (regex [(\s*)\b(new|c(lose(d)?|ap)|p(anic(ln)?|rint(ln)?)|len|make)(?:\b|\()]
+                (1 punctuation.whitespace.support.function.leading.go)
+                (2 support.function.builtin.go))))
+    (include @function_block)
+    (include @function_calls)
+    (include @fn_parens))
+
+(collection function_calls
+    (zone meta.function-call.go
+        (match
+            (regex [(?x)
+                (?: (?= \s ) (?:(?<=else|new|return) | (?<!\w)) (\s+) )?
+                (\b
+                    (?!(for|if|else|switch|return)\s*\()
+                    (?:[[:alpha:]_][[:alnum:]_]*+\b)            # method name
+                )
+                \s*(\()
+            ]
+                (3 punctuation.definition.parameters.go)
+                (1 punctuation.whitespace.function-call.leading.go)
+                (2 support.function.any-method.go)))))
+
+(collection receiver_function_declaration
+    (zone meta.function.receiver.go
+        (start
+            (regex [(?x)
+    	            (func)\s*
+    	            (
+    	            (?: \( ((?:[\[\]\w\d\s,._*&<>-]|(?:interface\{\}))*) \)\s+ )                # receiver variable declarations, in brackets
+    	            (?: ([[:alpha:]_][[:alnum:]_]*)? )          # name of function is optional
+    	            )
+    	            (?: \( ((?:[\[\]\w\d\s,._*&<>-]|(?:interface\{\}))*)? \) )               # required braces for parameters (even if empty)
+    	            \s*
+    	            (?: \(? ((?:[\[\]\w\d\s,._*&<>-]|(?:interface\{\}))*) \)? )?             # optional return types, optionally within braces
+    	    ]
+                (3 variable.receiver.go)
+                (4 entity.name.function.go.name)
+                (5 variable.parameters.go)
+                (1 keyword.control.go)
+                (6 variable.return-types.go)
+                (2 entity.name.function.go.full-name)))
+        (end
+            (regex [(?<=\})]))
+        (subzones
+            (include @comments)
+            (include @storage_type)
+            (include @storage_modifier)
+            (include @function_block))))
+
+(collection root_parens
+    (zone meta.parens.go
+        (start
+            (regex [\(]))
+        (end
+            (regex [(?<=\()(\))?|(?:\))]
+                (1 meta.parens.empty.go)))
+        (subzones
+            (include @basic_things)
+            (include @exported_variables)
+            (include @function_calls))))
+
+(collection string_escaped_char
+    (zone constant.character.escape.go
+        (match
+            (regex [\\(\\|[abfnrutv'"]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|[0-7]{3})])))
+    (zone invalid.illegal.unknown-escape.go
+        (match
+            (regex \\.))))
+
+(collection string_placeholder
+    (zone constant.other.placeholder.go
+        (match
+            (regex [(?x)%
+                        (\d+\$)?                                    # field (argument #)
+                        [#0\- +']*                                  # flags
+                        [,;:_]?                                     # separator character (AltiVec)
+                        ((-?\d+)|\*(-?\d+\$)?)?                     # minimum field width
+                        (\.((-?\d+)|\*(-?\d+\$)?)?)?                # precision
+                        [diouxXDOUeEfFgGaAcCsSpnvtTbyYhHmMzZ%]      # conversion type
+                    ])))
+    (zone invalid.illegal.placeholder.go
+        (match %)))
+
+(collection exported_variables
+    (zone variable.exported.go
+        (match
+            (regex [(?<=\s|\[\])([[:upper:]][[:alnum:]_]*)(?=\W+)]))))
+
+(collection keywords
+    (zone keyword.control.go
+        (match
+            (regex [\b(s(truct|elect|witch)|c(ontinue|ase)|type|i(nterface|f|mport)|def(er|ault)|package|else|var|f(or|unc|allthrough)|r(eturn|ange)|go(to)?|break)\b])))
+    (zone storage.type.go
+        (match
+            (regex `(\b|(?<=\]))(int(16|8|32|64)?|uint(16|8|32|64|ptr)?|float(32|64)?|complex(64|128)?|b(yte|ool)|string)\b`)))
+    (zone storage.modifier.go
+        (match
+            (regex [\b(c(onst|han)|map)\b])))
+    (zone constant.language.go
+        (match
+            (list nil true false iota)
+            (boundary.both)))
+    (zone constant.numeric.go
+        (match
+            (regex [\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)\b])))
+    (zone support.channel-operator.go
+        (match
+            (regex [(\<\-)|(\-\>)]))))
+
+(collection block
+    (zone meta.block.go
+        (start
+            (regex [\{]))
+        (end
+            (regex [\}]))
+        (subzones
+            (include @block_innards))))
+
+(collection plain_function_declaration
+    (zone meta.function.plain.go
+        (start
+            (regex [(?x)
+    	            ^[[:blank:]]*(func)\s*
+    	            (?: ([[:alpha:]_][[:alnum:]_]*)? )          # name of function is optional
+    	            (?: \( ((?:[\[\]\w\d\s\/,._*&<>-]|(?:interface\{\}))*)? \) )             # required braces for parameters (even if empty)
+    	            \s*
+    	            (?: \(? ((?:[\[\]\w\d\s,._*&<>-]|(?:interface\{\}))*) \)? )?             # optional return types, optionally within braces
+    	    ]
+                (3 variable.parameters.go)
+                (4 variable.return-types.go)
+                (1 keyword.control.go)
+                (2 entity.name.function.go)))
+        (end
+            (regex [(?<=\})]))
+        (subzones
+            (include @comments)
+            (include @storage_type)
+            (include @storage_modifier)
+            (include @function_block))))
+
+(collection strings
+    (zone string.quoted.double.go
+        (start
+            (regex "
+                (0 punctuation.definition.string.begin.go)))
+        (end
+            (regex "
+                (0 punctuation.definition.string.end.go)))
+        (subzones
+            (include @string_placeholder)
+            (include @string_escaped_char)))
+    (zone string.quoted.single.go
+        (start
+            (regex '
+                (0 punctuation.definition.string.begin.go)))
+        (end
+            (regex '
+                (0 punctuation.definition.string.end.go)))
+        (subzones
+            (include @string_escaped_char)))
+    (zone string.quoted.raw.go
+        (start
+            (regex [`]
+                (0 punctuation.definition.string.begin.go)))
+        (end
+            (regex [`]
+                (0 punctuation.definition.string.end.go)))))
+
+(collection initializers
+    (zone meta.initialization.explicit.go
+        (match
+            (regex [^[[:blank:]]*(var)\s+(?:[[:alpha:]_][[:alnum:]_]*)(?:,\s+[[:alpha:]_][[:alnum:]_]*)*]
+                (0 variable.other.go)
+                (1 keyword.control.go))))
+    (zone meta.initialization.short.go
+        (match
+            (regex [(?:[[:alpha:]_][[:alnum:]_]*)(?:,\s+[[:alpha:]_][[:alnum:]_]*)*\s*(:=)]
+                (0 variable.other.go)
+                (1 keyword.operator.initialize.go)))))
+
+(collection basic_things
+    (include @comments)
+    (include @initializers)
+    (include @access)
+    (include @strings)
+    (include @keywords))

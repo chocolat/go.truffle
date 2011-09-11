@@ -1,0 +1,8 @@
+(name Slice)
+
+(trigger
+    (tab [[]]))
+
+(only-in source.go)
+
+(snippet [[]%{1="valtype"}])

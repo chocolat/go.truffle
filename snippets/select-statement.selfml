@@ -1,0 +1,10 @@
+(name [Select Statement])
+
+(trigger
+    (tab sel))
+
+(only-in source.go)
+
+(snippet [select {
+case%{0}
+}])

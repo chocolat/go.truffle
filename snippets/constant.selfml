@@ -1,0 +1,8 @@
+(name Constant)
+
+(trigger
+    (tab con))
+
+(only-in source.go)
+
+(snippet [const %{1="name"}%{2/(.+)/ /}%{2="type"} = %{0="value"}])

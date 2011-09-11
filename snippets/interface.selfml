@@ -1,0 +1,10 @@
+(name Interface)
+
+(trigger
+    (tab int))
+
+(only-in source.go)
+
+(snippet [interface {
+	%{0="method"}
+}])

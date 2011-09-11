@@ -1,0 +1,10 @@
+(name [Deferred Call])
+
+(trigger
+    (tab de))
+
+(only-in source.go)
+
+(snippet [defer func(%{1="params"}) {
+	%{0="// body"}
+}(%{2="%{1/(.+)?/(?1:values)/}"})])

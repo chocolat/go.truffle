@@ -1,0 +1,8 @@
+(name Iota)
+
+(trigger
+    (key [[cmd]I]))
+
+(only-in source.go)
+
+(snippet iota)

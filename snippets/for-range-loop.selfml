@@ -1,0 +1,10 @@
+(name [For Range Loop])
+
+(trigger
+    (tab forr))
+
+(only-in source.go)
+
+(snippet [for %{2="name"} := range %{1="collection"} {
+	%{0="// body"}
+}])

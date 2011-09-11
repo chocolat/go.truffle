@@ -1,0 +1,8 @@
+(name [Empty Interface])
+
+(trigger
+    (tab in))
+
+(only-in source.go)
+
+(snippet [interface {}])

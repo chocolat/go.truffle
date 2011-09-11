@@ -1,0 +1,8 @@
+(name Channel)
+
+(trigger
+    (tab ch))
+
+(only-in source.go)
+
+(snippet [chan %{1="valtype"}])

@@ -1,0 +1,19 @@
+(trigger
+    (key [[cmd]K]))
+
+(name Compile)
+
+(only-in source.go)
+
+(input document)
+
+(output html)
+
+(save nothing)
+
+(script [#!/usr/bin/env ruby
+
+require "#{ENV['TM_BUNDLE_SUPPORT']}/gomate"
+
+gomate "gocomp", "Compiling"
+])

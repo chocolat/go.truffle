@@ -1,0 +1,9 @@
+(name Import)
+
+(trigger
+    (tab imp))
+
+(only-in source.go)
+
+(snippet [import%{2/(.+)/ /}%{2="%{1}"} "%{1="package"}"
+])

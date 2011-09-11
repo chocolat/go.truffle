@@ -1,0 +1,10 @@
+(name Struct)
+
+(trigger
+    (tab st))
+
+(only-in source.go)
+
+(snippet [struct {
+	%{0="member"}
+}])

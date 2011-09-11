@@ -1,0 +1,8 @@
+(name [Return Statement])
+
+(trigger
+    (tab ret))
+
+(only-in source.go)
+
+(snippet [return%{1/(.+)/ /}%{1="value"}])

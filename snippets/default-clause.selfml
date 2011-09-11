@@ -1,0 +1,9 @@
+(name [Default Clause])
+
+(trigger
+    (tab def))
+
+(only-in source.go)
+
+(snippet [default:
+	%{0="//body"}])

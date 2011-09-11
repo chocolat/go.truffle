@@ -1,0 +1,10 @@
+(name [For Loop])
+
+(trigger
+    (tab for))
+
+(only-in source.go)
+
+(snippet [for %{1="condition"}%{1/(.+)/ /}{
+	%{0="// body"}
+}])

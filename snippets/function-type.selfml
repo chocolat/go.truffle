@@ -1,0 +1,8 @@
+(name [Function Type])
+
+(trigger
+    (tab fun))
+
+(only-in source.go)
+
+(snippet [func(%{4="params"})%{5/(.+)/ /}%{5="type"}])

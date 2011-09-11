@@ -1,0 +1,77 @@
+(detector
+    (extension go))
+
+(detector
+    (content-matches [(?i)-[*]-\s*(mode:)?\s*go\s*-[*]-]))
+
+(folding
+    (start [(?x)
+          /\*\*(?!\*)                           # opening C-style comment with 2 asterisks but no third later on
+         |                                      # OR
+          ^                                     # start of line...
+           (?!                                  # ...which does NOT contain...
+              [^{(]*?//                         #    ...a possible bunch of non-opening-braces, followed by a C++ comment
+             |                                  #    OR
+              [^{(]*?/\*(?!.*?\*/.*?[{(])       #    ...a possible bunch of non-opening-braces, followed by a C comment with no ending
+           )
+           .*?                                  # ...any characters (or none)...
+           [{(]\s*                              # ...followed by an open brace and zero or more whitespace...
+           (                                    # ...followed by...
+            $                                   #    ...the end of line...
+             |                                  #    OR
+            //                                  #    ...a C++ comment...
+             |                                  #    OR
+            /\*(?!.*?\*/.*\S)                   #    ...a C comment, so long as no non-whitespace chars follow it..
+           )
+    ])
+    (stop [(?<!\*)\*\*/|^\s*[})]]))
+
+(shell-variables
+    (TM_COMMENT_START [// ])
+    (TM_COMMENT_START_2 /*)
+    (TM_COMMENT_END_2 */)
+    (TM_COMMENT_DISABLE_INDENT_2 yes))
+
+(comment.line [// ])
+
+(comment.block /* */)
+
+(indentation.decrease [(?x)
+	    ^                            # start of line
+	        (.*\*/)?                 # skip comments if present
+             (					# three possibilities
+	           \s* \}                # whitespace and a closing curly brace
+	           (                     # capture:
+	             [^}{"']* \{        # anything other than curly braces or quotes, then open curly
+	           )?                    # (optional)
+	           [;\s]*?               # any whitespace or semicolons
+	         |
+                (?:\s* (case|default).*:)	# case statements pop back one indent
+              |
+                (?: \) (?<! \( ) )    # closing braces not preceded by opening braces
+             )
+	        (//.*|/\*.*\*/\s*)?      # skip any comments (optional)
+	    $                            # end of line
+	])
+
+(indentation.increase [(?x)
+	    ^ 
+          (?: .* \*/ )?				# skip any comments
+          (?:
+           (.* \{ [^}"'\n]*)		# lines containing an open curly but no quotes or close curly
+           |						# OR
+           (?:\s* (case|default).*:)	# case statements
+           |						# OR
+           (.* \( [^)"'\n]*)		# lines containing an open brace but no quotes or close brace
+          )
+	     (//.*|/\*.*\*/\s*)?		# skip any comments (optional)
+         $
+	])
+
+(indentation.increase-next-line-only [(?x)^
+	    (?! .* [;:{}]                    # do not indent when line ends with ;, :, {, or }
+	        \s* (//|/[*] .* [*]/ \s* $)  #  …account for potential trailing comment
+	    )
+	])
+
+(indentation.ignore-line [^\s*((/\*|\*/|//|import\b.*|package\b.*).*)?$])

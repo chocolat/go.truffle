@@ -1,0 +1,26 @@
+(trigger
+    (key [[ctrl][shift]H]))
+
+(name [Reformat Document])
+
+(only-in source.go)
+
+(input document)
+
+(output replace-all)
+
+(save nothing)
+
+(script [#!/bin/bash
+
+require_cmd gofmt
+
+GOFMT_SPACING="-tabwidth=$TM_TAB_SIZE"
+if [[ "$TM_SOFT_TABS" = "YES" ]]; then
+	GOFMT_SPACING="-spaces $GOFMT_SPACING"
+fi
+
+if ! gofmt $GOFMT_SPACING 2>&1; then
+	exit_show_tool_tip
+fi
+])

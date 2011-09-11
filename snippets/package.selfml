@@ -1,0 +1,12 @@
+(name Package)
+
+(trigger
+    (tab pkg))
+
+(only-in source.go)
+
+(snippet [%{1/^main$|(.+)/(?1:\/*
+	The $1 package implements ... bananas?
+*\/
+)/}package %{1="main"}
+])

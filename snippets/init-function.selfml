@@ -1,0 +1,11 @@
+(name [Init Function])
+
+(trigger
+    (tab init))
+
+(only-in source.go)
+
+(snippet [func init() {
+	%{0="// body"}
+}
+])

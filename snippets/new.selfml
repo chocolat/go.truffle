@@ -1,0 +1,8 @@
+(name New)
+
+(trigger
+    (tab new))
+
+(only-in source.go)
+
+(snippet [%{1="name"}%{1/(.+)/ := /}new(%{0="type"})])
