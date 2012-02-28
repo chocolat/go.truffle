@@ -177,7 +177,7 @@
             (regex [\b(s(truct|elect|witch)|c(ontinue|ase)|type|i(nterface|f|mport)|def(er|ault)|package|else|var|f(or|unc|allthrough)|r(eturn|ange)|go(to)?|break)\b])))
     (zone storage.type.go
         (match
-            (regex `(\b|(?<=\]))(int(16|8|32|64)?|uint(16|8|32|64|ptr)?|float(32|64)?|complex(64|128)?|b(yte|ool)|string)\b`)))
+            (regex `(\b|(?<=\]))(int(16|8|32|64)?|uint(16|8|32|64|ptr)?|float(32|64)|complex(64|128)|b(yte|ool)|string|error)\b`)))
     (zone storage.modifier.go
         (match
             (regex [\b(c(onst|han)|map)\b])))

@@ -7,5 +7,4 @@
 
 (snippet [import (
 	"%{0="package"}"
-)
-])
+)])

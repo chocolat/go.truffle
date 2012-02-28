@@ -1,0 +1,8 @@
+(name [Deferred Function Call])
+
+(trigger
+    (tab def))
+
+(only-in source.go)
+
+(snippet [defer %{0="file.Close()"}])

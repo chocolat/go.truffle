@@ -7,5 +7,4 @@
 
 (snippet [const (
 	%{1="name"}%{2/(.+)/ /}%{2="type"} = %{0="value"}
-)
-])
+)])

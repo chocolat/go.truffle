@@ -1,4 +1,4 @@
-(name [Deferred Call])
+(name [Deferred Goroutine Call])
 
 (trigger
     (tab de))

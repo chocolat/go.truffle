@@ -5,5 +5,4 @@
 
 (only-in source.go)
 
-(snippet [import%{2/(.+)/ /}%{2="%{1}"} "%{1="package"}"
-])
+(snippet [import%{2/(.+)/ /}%{2="%{1}"} "%{1="package"}"])

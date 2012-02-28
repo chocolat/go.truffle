@@ -8,5 +8,4 @@
 (snippet [%{1/^main$|(.+)/(?1:\/*
 	The $1 package implements ... bananas?
 *\/
-)/}package %{1="main"}
-])
+)/}package %{1="main"}])

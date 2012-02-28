@@ -7,5 +7,4 @@
 
 (snippet [func main() {
 	%{0="// body"}
-}
-])
+}])
