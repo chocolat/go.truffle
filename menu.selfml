@@ -1,9 +1,4 @@
-(menu command.run
-    command.compile
-    command.build
-    command.build-package
-    ---
-    command.tidy
+(menu command.tidy
     ---
     (submenu Organization snippet.package snippet.import snippet.imports)
     (submenu Declaration snippet.type snippet.types snippet.constant snippet.constants snippet.variable snippet.variables snippet.function snippet.function-w-result-vars snippet.method snippet.method-w-result-vars)
